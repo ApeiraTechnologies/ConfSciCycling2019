@@ -2,8 +2,6 @@ import numpy as np
 # from model_perf.model_acd import est_wind
 from model_perf.model_acd import inv_model_grappe_ACd
 from model_perf.model_acd import inv_model_grappe_F
-from utls.extract_data import extract_with_pandas
-
 
 if __name__ == '__main__':
 

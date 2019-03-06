@@ -60,17 +60,17 @@ def extract_cedric_data(f_name):
     l_35bv = df['35bv'].astype(float)
     l_35bp = df['35bp'].astype(float)
 
-    l_25hv_m = np.mean(l_25hv)
-    l_25hp_m = np.mean(l_25hp)
-    l_35hv_m = np.mean(l_35hv)
-    l_35hp_m = np.mean(l_35hp)
-    l_25bv_m = np.mean(l_25bv)
-    l_25bp_m = np.mean(l_25bp)
-    l_35bv_m = np.mean(l_35bv)
-    l_35bp_m = np.mean(l_35bp)
+    # l_25hv_m = np.mean(l_25hv)
+    # l_25hp_m = np.mean(l_25hp)
+    # l_35hv_m = np.mean(l_35hv)
+    # l_35hp_m = np.mean(l_35hp)
+    # l_25bv_m = np.mean(l_25bv)
+    # l_25bp_m = np.mean(l_25bp)
+    # l_35bv_m = np.mean(l_35bv)
+    # l_35bp_m = np.mean(l_35bp)
 
-    l_power = [l_25hp_m, l_35hp_m, l_25bp_m, l_35bp_m]
-    l_speed = [l_25hv_m, l_35hv_m, l_25bv_m, l_35bv_m]
+    l_power = [l_25hp, l_35hp, l_25bp, l_35bp]
+    l_speed = [l_25hv, l_35hv, l_25bv, l_35bv]
 
     return l_power, l_speed
 
