@@ -42,6 +42,7 @@ if __name__ == '__main__':
             fin = str(all_time_15s[i])
             ride_crop = ride[debut:fin]
             speed = ride_crop['speed']
+            mean_power = ride_crop['power'].mean()
             speed_carre = np.power(speed, 2)
             speed_quadra = np.sqrt(np.mean(speed_carre))
             mean_speed = ride_crop['speed'].mean()
@@ -50,3 +51,4 @@ if __name__ == '__main__':
             print('vitesse moyenne : ', mean_speed)
             print('moyenne quadratique : ', speed_quadra)
             print('vitesse écart type : ', std_speed)
+            print('puissance moyenne : ', mean_power)
