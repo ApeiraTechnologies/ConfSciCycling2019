@@ -44,7 +44,7 @@ def inv_model_grappe_F(power, v, cr, m):
     return f_aero
 
 
-def f_apeira_correction(p, v, m, Cr):
+def f_apeira_correction(p, v, m, Cr, debug=False):
     G = 9.81
     A = Cr * m * G
     D = m
@@ -59,6 +59,12 @@ def f_apeira_correction(p, v, m, Cr):
     for i in range(N):
         alpha[i] = power[i] / speed[i]
 
-    f_average = np.mean(alpha) - A - (np.mean(beta) * (D / N * beta))
+    f_average = np.mean(alpha) - A - (D / N * beta)
+
+    if debug:
+        print('Moyenne force : ', f_average)
+        print('Moyenne Alpha : ', np.mean(alpha))
+        print('A : ', A)
+        print('D/N * Beta : ', D/N * beta)
 
     return f_average

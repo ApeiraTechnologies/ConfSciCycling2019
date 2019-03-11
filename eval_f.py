@@ -5,6 +5,33 @@ import pandas as pd
 import numpy as np
 # import datetime
 
+
+def draw(index, power, speed, debut, fin, name):
+    l_draw = np.zeros(len(power))
+    b_draw = False
+    for j in range(len(debut)):
+        b_draw = False
+        for i in range(len(power)):
+            # print('debut', debut[j])
+            # print('fin', fin[j])
+            # print('type index', type(index[i]))
+            # print('type debut', type(debut[j]))
+            if str(index[i]) == debut[j]:
+                b_draw = True
+            if str(index[i]) == fin[j]:
+                l_draw[i] = 400
+                b_draw = False
+            if b_draw is True:
+                l_draw[i] = 400
+
+    df = pd.DataFrame()
+
+    df['speed'] = speed
+    df['power'] = power
+    df['crop'] = l_draw
+    df.to_csv(name+'.csv')
+
+
 if __name__ == '__main__':
     f_path_data = '/home/cedric/Documents/Ergocycle/data/DataEstACd/20180515/'
     f_path_user = 'UtilisateurCedric/'
@@ -28,12 +55,24 @@ if __name__ == '__main__':
         filename_fit = f_path_data + f_path_user + f_name[f] + exten
         print('Nom du fichier traité : ', filename_fit)
         ride = bikeread(filename_fit, drop_nan='columns')
-        ride['speed'] = ride['speed']
+        # ride['speed'] = ride['speed']
+        ride_all = ride['speed'].tolist()
+        power_all = ride['power'].tolist()
+        l_crop = np.zeros(len(power_all))
         # print('The ride is the following:\n {}'.format(ride.head()))
         # print('The available data are {}'.format(ride.columns))
-
+        all_index = ride.index.tolist()
+        all_speed = ride['speed']
+        all_power = ride['power']
         all_time_debut = df[f_name[f]+'-debut'].tolist()
         all_time_fin = df[f_name[f]+'-fin'].tolist()
+
+        draw(all_index,
+             all_power,
+             all_speed,
+             all_time_debut,
+             all_time_fin,
+             f_name[f])
 
         f_moy = []
         v_moy_q = []
@@ -46,14 +85,18 @@ if __name__ == '__main__':
             ride_crop = ride[debut:fin]
             speed = ride_crop['speed'].tolist()
             power = ride_crop['power'].tolist()
-            f_moy.append(f_apeira_correction(power,
-                                             speed,
-                                             100,
-                                             0.004))
+            temp = f_apeira_correction(power,
+                                       speed,
+                                       100,
+                                       0.004,
+                                       debug=True)
+            print('val_sortie boucle : ', temp)
+            f_moy.append(temp)
             v_moy.append(np.mean(speed))
             s_pow_2 = np.power(speed, 2)
             v_moy_q.append(np.sqrt(np.mean(s_pow_2)))
 
+        print('Liste f_moy : ', f_moy)
         df_out[f_name[f]] = f_moy
         df_out[f_name[f]+'-vitesse moyenne'] = v_moy
         df_out[f_name[f]+'-vitesse moyenne quadratique'] = v_moy_q
