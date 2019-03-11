@@ -8,6 +8,7 @@ if __name__ == '__main__':
     f_path_data = '/home/cedric/Documents/Ergocycle/data/DataEstACd/20180515/'
     f_path_user = 'UtilisateurDenis/'
     s_date = '2018-05-18'
+    # f_name = ['2018-05-18-14-10-54']
     f_name = ['2018-05-18-16-09-15']
     exten = '.fit'
 
@@ -63,26 +64,28 @@ if __name__ == '__main__':
                     if ontop is False:
                         l_pic_b.append(acc_b)
                         acc_b = 0
-                        acc_h += power[ech]
+                        acc_h += (power[ech] - mean_power)
                         l_plot_h[ech] = 400
                         ontop = True
                     else:
-                        acc_h += power[ech]
+                        acc_h += (power[ech] - mean_power)
                         l_plot_h[ech] = 400
                 else:
                     if ontop is False:
-                        acc_b += power[ech]
+                        acc_b += np.abs(power[ech] - mean_power)
                         l_plot_b[ech] = 100
 
                     else:
                         l_pic_h.append(acc_h)
                         acc_h = 0
                         ontop = False
-                        acc_b += power[ech]
+                        acc_b += np.abs(power[ech] - mean_power)
                         l_plot_b[ech] = 100
 
             dic[debut+'-sup'] = l_pic_h
             dic[debut+'-inf'] = l_pic_b
+            acc_h = 0
+            acc_b = 0
 
             # df3['power'] = power
             # df3['haut'] = l_plot_h
