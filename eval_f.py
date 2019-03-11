@@ -1,5 +1,6 @@
 from skcycling.io import bikeread
 from model_perf.model_acd import f_apeira_correction
+from model_perf.model_acd import ACd_apeira_correction
 # import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
@@ -75,6 +76,7 @@ if __name__ == '__main__':
              f_name[f])
 
         f_moy = []
+        ACd_moy = []
         v_moy_q = []
         v_moy = []
 
@@ -90,14 +92,23 @@ if __name__ == '__main__':
                                        100,
                                        0.004,
                                        debug=True)
+            temp1 = ACd_apeira_correction(power,
+                                          speed,
+                                          100,
+                                          0.004,
+                                          1010,
+                                          20,
+                                          debug=True)
             print('val_sortie boucle : ', temp)
             f_moy.append(temp)
+            ACd_moy.append(temp1)
             v_moy.append(np.mean(speed))
             s_pow_2 = np.power(speed, 2)
             v_moy_q.append(np.sqrt(np.mean(s_pow_2)))
 
         print('Liste f_moy : ', f_moy)
-        df_out[f_name[f]] = f_moy
+        df_out[f_name[f]+'-force'] = f_moy
+        df_out[f_name[f]+'-ACd'] = ACd_moy
         df_out[f_name[f]+'-vitesse moyenne'] = v_moy
         df_out[f_name[f]+'-vitesse moyenne quadratique'] = v_moy_q
 

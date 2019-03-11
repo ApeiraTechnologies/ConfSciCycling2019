@@ -68,3 +68,33 @@ def f_apeira_correction(p, v, m, Cr, debug=False):
         print('D/N * Beta : ', D/N * beta)
 
     return f_average
+
+
+def ACd_apeira_correction(p, v, m, Cr, pressure, T, debug=False):
+    G = 9.81
+    A = Cr * m * G
+    D = m
+    N = len(p)
+    power = np.array(p)
+    speed = np.array(v)
+    alpha = np.zeros(N)
+    acc = np.zeros(N)
+    beta = np.zeros(N)
+
+    for i in range(N):
+        if i == 0:
+            acc[i] = speed[i+1] - speed[i]
+        else:
+            acc[i] = speed[i] - speed[i-1]
+
+    for i in range(N):
+        alpha[i] = power[i] / (speed[i] * speed[i] * speed[i])
+        beta[i] = (A + D * acc[i]) / (speed[i] * speed[i])
+
+    ACd_average = (np.sum(alpha) / N) - (np.sum(beta) / N)
+    ACd_average = ACd_average * 2 / (rho(pressure, T))
+
+    if debug:
+        print('ACd moyen : ', ACd_average)
+
+    return ACd_average
