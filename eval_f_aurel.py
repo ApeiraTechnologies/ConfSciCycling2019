@@ -1,10 +1,8 @@
-# from skcycling.io import bikeread
 from model_perf.model_acd import f_apeira_correction
 from model_perf.model_acd import ACd_apeira_correction
-# import matplotlib.pyplot as plt
+from utls.extract_data import check_crop
 import pandas as pd
 import numpy as np
-# import datetime
 
 
 def draw(index, power, speed, debut, fin, name):
@@ -74,6 +72,10 @@ if __name__ == '__main__':
         ACd_moy = []
         v_moy_q = []
         v_moy = []
+        l_b_few = []
+        l_b_period = []
+        l_val_rest = []
+        l_period = []
 
         for i in range(len(all_time_debut)):
             print('Index du crop : ', i)
@@ -82,14 +84,25 @@ if __name__ == '__main__':
             ride_crop = ride[debut:fin]
             speed = ride_crop['speed'].tolist()
             power = ride_crop['power'].tolist()
+
+            b_few, b_period, period, val_rest = check_crop(power,
+                                                           speed,
+                                                           100,
+                                                           3,
+                                                           1)
+            l_b_few.append(b_few)
+            l_b_period.append(b_period)
+            l_val_rest.append(val_rest)
+            l_period.append(period)
+
             temp = f_apeira_correction(power,
                                        speed,
-                                       100,
+                                       80,
                                        0.004,
                                        debug=True)
             temp1 = ACd_apeira_correction(power,
                                           speed,
-                                          100,
+                                          80,
                                           0.004,
                                           1010,
                                           20,
@@ -106,5 +119,9 @@ if __name__ == '__main__':
         df_out[f_name[f]+'-ACd'] = ACd_moy
         df_out[f_name[f]+'-vitesse moyenne'] = v_moy
         df_out[f_name[f]+'-vitesse moyenne quadratique'] = v_moy_q
+        df_out[f_name[f]+'-b_few'] = l_b_few
+        df_out[f_name[f]+'-b_period'] = l_b_period
+        df_out[f_name[f]+'-val reste'] = l_val_rest
+        df_out[f_name[f]+'-Nb periode'] = l_period
 
     df_out.to_csv('res_aurel.csv')

@@ -2,6 +2,27 @@ import numpy as np
 import pandas as pd
 
 
+def check_crop(power_c, speed_c, len_mini, tol, f_ech):
+
+    N = len(power_c)
+    b_few = True
+    b_period = True
+    speed_c_mean = np.mean(speed_c)
+    time_mini = len_mini / speed_c_mean
+    N_mini = f_ech * time_mini
+
+    if N < N_mini:
+        b_few = False
+
+    val_rest = N % N_mini
+    nb_period = N / N_mini
+
+    if val_rest > tol:
+        b_period = False
+
+    return b_few, b_period, nb_period, val_rest
+
+
 def extract_from_int(power, speed, l_d_int, l_f_int):
 
     nb_sec_d = []

@@ -1,6 +1,7 @@
 from skcycling.io import bikeread
 from model_perf.model_acd import f_apeira_correction
 from model_perf.model_acd import ACd_apeira_correction
+from utls.extract_data import check_crop
 # import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
@@ -35,13 +36,14 @@ def draw(index, power, speed, debut, fin, name):
 
 if __name__ == '__main__':
     f_path_data = '/home/cedric/Documents/Ergocycle/data/DataEstACd/20180515/'
-    f_path_user = 'UtilisateurDenis/'
+    f_path_user = 'UtilisateurGuillaume/'
     s_date = '2018-05-18'
-    f_name = ['2018-05-18-16-09-15']
+    f_name = ['2018-05-18-11-12-07',
+              '2018-05-18-14-10-54']
 
     exten = '.fit'
 
-    f_crop = 'crop_denis_v2.csv'
+    f_crop = 'crop_guillaume_v2.csv'
     df = pd.read_csv(f_path_data + f_path_user + f_crop)
 
     df_out = pd.DataFrame()
@@ -74,6 +76,10 @@ if __name__ == '__main__':
         ACd_moy = []
         v_moy_q = []
         v_moy = []
+        l_b_few = []
+        l_b_period = []
+        l_val_rest = []
+        l_period = []
 
         for i in range(len(all_time_debut)):
             print('Index du crop : ', i)
@@ -82,19 +88,30 @@ if __name__ == '__main__':
             ride_crop = ride[debut:fin]
             speed = ride_crop['speed'].tolist()
             power = ride_crop['power'].tolist()
+            # check if  there is enough data
+            b_few, b_period, period, val_rest = check_crop(power,
+                                                           speed,
+                                                           100,
+                                                           3,
+                                                           1)
+            l_b_few.append(b_few)
+            l_b_period.append(b_period)
+            l_val_rest.append(val_rest)
+            l_period.append(period)
+
             temp = f_apeira_correction(power,
                                        speed,
-                                       100,
+                                       88,
                                        0.004,
                                        debug=True)
             temp1 = ACd_apeira_correction(power,
                                           speed,
-                                          100,
+                                          88,
                                           0.004,
                                           1010,
                                           20,
                                           debug=True)
-            print('val_sortie boucle : ', temp)
+
             f_moy.append(temp)
             ACd_moy.append(temp1)
             v_moy.append(np.mean(speed))
@@ -106,5 +123,9 @@ if __name__ == '__main__':
         df_out[f_name[f]+'-ACd'] = ACd_moy
         df_out[f_name[f]+'-vitesse moyenne'] = v_moy
         df_out[f_name[f]+'-vitesse moyenne quadratique'] = v_moy_q
+        df_out[f_name[f]+'-b_few'] = l_b_few
+        df_out[f_name[f]+'-b_period'] = l_b_period
+        df_out[f_name[f]+'-val reste'] = l_val_rest
+        df_out[f_name[f]+'-Nb periode'] = l_period
 
-    df_out.to_csv('res_denis_v2.csv')
+    df_out.to_csv('res_guillaume_v2_88.csv')
