@@ -1,19 +1,16 @@
-from skcycling.io import bikeread
+# from skcycling.io import bikeread
 import matplotlib.pyplot as plt
 import pandas as pd
 
-df = pd.DataFrame()
 
 path_data = '/home/cedric/Documents/Ergocycle/data/DataEstACd/20180515/'
 # user = 'UtilisateurCedric/'
 # user = 'UtilisateurGuillaume/'
 # user = 'UtilisateurDenis/'
-user = 'UtilisateurDenis/'
-f_name = '2018-05-18-16-09-15.fit'
+user = 'UtilisateurAurel/'
+f_name = 'recup_data_aurel.csv'
 filename_fit = path_data + user + f_name
-ride = bikeread(filename_fit, drop_nan='columns')
-print('The ride is the following:\n {}'.format(ride.head()))
-print('The available data are {}'.format(ride.columns))
+df = pd.read_csv(filename_fit)
 
 # ride['power'].plot(legend=True)
 
@@ -26,10 +23,14 @@ print('The available data are {}'.format(ride.columns))
 # l_val = df.index.tolist()
 # l_val_c = l_val[0:len(power)]
 
-ride['speed'] = ride['speed'] * 36
+df['speed'] = df['speed'] * 36
+speed = df['speed'].tolist()
+power = df['power'].tolist()
 
-columns = ['power', 'speed']
-ride[columns].plot(legend=True)
-# plt.plot(l_val_c, power, '--r', l_val, speed, '--b')
+val_x = []
+for i in range(len(speed)):
+    val_x.append(i)
+
+plt.plot(val_x, power, '--r', val_x, speed, '--b')
 plt.xlabel('Time')
 plt.show()

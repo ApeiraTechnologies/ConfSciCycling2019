@@ -1,4 +1,4 @@
-from skcycling.io import bikeread
+# from skcycling.io import bikeread
 from model_perf.model_acd import f_apeira_correction
 from model_perf.model_acd import ACd_apeira_correction
 # import matplotlib.pyplot as plt
@@ -35,13 +35,13 @@ def draw(index, power, speed, debut, fin, name):
 
 if __name__ == '__main__':
     f_path_data = '/home/cedric/Documents/Ergocycle/data/DataEstACd/20180515/'
-    f_path_user = 'UtilisateurDenis/'
-    s_date = '2018-05-18'
-    f_name = ['2018-05-18-16-09-15']
+    f_path_user = 'UtilisateurAurel/'
+    s_date = 'recup_data_aurel'
+    f_name = ['recup_data_aurel']
 
-    exten = '.fit'
+    exten = '.csv'
 
-    f_crop = 'crop_denis_v2.csv'
+    f_crop = 'crop_aurel.csv'
     df = pd.read_csv(f_path_data + f_path_user + f_crop)
 
     df_out = pd.DataFrame()
@@ -50,7 +50,7 @@ if __name__ == '__main__':
 
         filename_fit = f_path_data + f_path_user + f_name[f] + exten
         print('Nom du fichier traité : ', filename_fit)
-        ride = bikeread(filename_fit, drop_nan='columns')
+        ride = pd.read_csv(filename_fit)
         # ride['speed'] = ride['speed']
         ride_all = ride['speed'].tolist()
         power_all = ride['power'].tolist()
@@ -77,8 +77,8 @@ if __name__ == '__main__':
 
         for i in range(len(all_time_debut)):
             print('Index du crop : ', i)
-            debut = str(all_time_debut[i])
-            fin = str(all_time_fin[i])
+            debut = all_time_debut[i]
+            fin = all_time_fin[i]
             ride_crop = ride[debut:fin]
             speed = ride_crop['speed'].tolist()
             power = ride_crop['power'].tolist()
@@ -107,4 +107,4 @@ if __name__ == '__main__':
         df_out[f_name[f]+'-vitesse moyenne'] = v_moy
         df_out[f_name[f]+'-vitesse moyenne quadratique'] = v_moy_q
 
-    df_out.to_csv('res_denis_v2.csv')
+    df_out.to_csv('res_aurel.csv')
