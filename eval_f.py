@@ -35,15 +35,22 @@ def draw(index, power, speed, debut, fin, name):
 
 
 if __name__ == '__main__':
+
+    export_check_crop = False
+
     f_path_data = '/home/cedric/Documents/Ergocycle/data/DataEstACd/20180515/'
-    f_path_user = 'UtilisateurGuillaume/'
+    f_path_user = 'UtilisateurCedric/'
     s_date = '2018-05-18'
-    f_name = ['2018-05-18-11-12-07',
-              '2018-05-18-14-10-54']
+    f_name = ['2018-05-18-11-37-45',
+              '2018-05-18-11-46-19',
+              '2018-05-18-13-55-23',
+              '2018-05-18-14-37-07',
+              '2018-05-18-15-00-26',
+              '2018-05-18-15-06-46']
 
     exten = '.fit'
 
-    f_crop = 'crop_guillaume_v2.csv'
+    f_crop = 'crop_cedric_v2.csv'
     df = pd.read_csv(f_path_data + f_path_user + f_crop)
 
     df_out = pd.DataFrame()
@@ -73,6 +80,7 @@ if __name__ == '__main__':
              f_name[f])
 
         f_moy = []
+        Rt = []
         ACd_moy = []
         v_moy_q = []
         v_moy = []
@@ -123,9 +131,11 @@ if __name__ == '__main__':
         df_out[f_name[f]+'-ACd'] = ACd_moy
         df_out[f_name[f]+'-vitesse moyenne'] = v_moy
         df_out[f_name[f]+'-vitesse moyenne quadratique'] = v_moy_q
-        df_out[f_name[f]+'-b_few'] = l_b_few
-        df_out[f_name[f]+'-b_period'] = l_b_period
-        df_out[f_name[f]+'-val reste'] = l_val_rest
-        df_out[f_name[f]+'-Nb periode'] = l_period
 
-    df_out.to_csv('res_guillaume_v2_88.csv')
+        if export_check_crop is True:
+            df_out[f_name[f]+'-b_few'] = l_b_few
+            df_out[f_name[f]+'-b_period'] = l_b_period
+            df_out[f_name[f]+'-val reste'] = l_val_rest
+            df_out[f_name[f]+'-Nb periode'] = l_period
+
+    df_out.to_csv('res_cedric_v2_100.csv')
