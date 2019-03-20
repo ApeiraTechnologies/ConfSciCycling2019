@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 if __name__ == '__main__':
 
     f_path_data = '/home/cedric/Documents/Ergocycle/data/DataEstACd/20180515/'
-    f_path_user = 'UtilisateurCedric/'
+    f_path_user = 'UtilisateurGuillaume/'
     s_date = '2018-05-18'
     f_name = ['RT_V']
 
