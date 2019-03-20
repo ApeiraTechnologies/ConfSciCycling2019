@@ -1,6 +1,7 @@
 from skcycling.io import bikeread
 from model_perf.model_acd import f_apeira_correction
 from model_perf.model_acd import ACd_apeira_correction
+from model_perf.model_acd import Rt_from_Pt
 from utls.extract_data import check_crop
 # import matplotlib.pyplot as plt
 import pandas as pd
@@ -80,7 +81,7 @@ if __name__ == '__main__':
              f_name[f])
 
         f_moy = []
-        Rt = []
+        Rt_moy = []
         ACd_moy = []
         v_moy_q = []
         v_moy = []
@@ -126,8 +127,11 @@ if __name__ == '__main__':
             s_pow_2 = np.power(speed, 2)
             v_moy_q.append(np.sqrt(np.mean(s_pow_2)))
 
+            Rt_moy.append(np.mean(Rt_from_Pt(power, speed)))
+
         print('Liste f_moy : ', f_moy)
         df_out[f_name[f]+'-force'] = f_moy
+        df_out[f_name[f]+'-RT'] = Rt_moy
         df_out[f_name[f]+'-ACd'] = ACd_moy
         df_out[f_name[f]+'-vitesse moyenne'] = v_moy
         df_out[f_name[f]+'-vitesse moyenne quadratique'] = v_moy_q

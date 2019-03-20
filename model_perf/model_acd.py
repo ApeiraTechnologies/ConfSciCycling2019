@@ -1,6 +1,18 @@
 import numpy as np
 
 
+def Rt_from_Pt(power, speed):
+    Rt = []
+
+    for i in range(len(power)):
+        pi = power[i]
+        vi = speed[i]
+        temp = pi/vi
+        Rt.append(temp)
+
+    return Rt
+
+
 def est_wind(p1, p2, v1, v2):
     v1_ms = v1 / 3.6
     v2_ms = v2 / 3.6
