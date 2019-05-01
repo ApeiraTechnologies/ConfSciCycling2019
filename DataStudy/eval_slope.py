@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 # import datetime
 
+
 if __name__ == '__main__':
     f_path_data = '/home/cedric/Documents/Ergocycle/data/DataEstACd/20180515/'
     f_path_user = 'UtilisateurDenis/'
